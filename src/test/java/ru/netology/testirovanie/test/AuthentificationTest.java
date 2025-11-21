@@ -24,7 +24,7 @@ public class AuthentificationTest {
 
         var registeredUser = getRegisteredUser("active");
 
-        $("[data-test-id=login] input").setValue(registeredUser.getUsername());
+        $("[data-test-id=login] input").setValue(registeredUser.getLogin());
         $("[data-test-id=password] input").setValue(registeredUser.getPassword());
         $("[data-test-id=action-login]").click();
 
@@ -37,7 +37,7 @@ public class AuthentificationTest {
     void shouldShowErrorWithUnregisteredActiveUser() {
         var unregisteredUser = DataGenerator.Registration.getUser("active");
 
-        $("[data-test-id=login] input").setValue(unregisteredUser.getUsername());
+        $("[data-test-id=login] input").setValue(unregisteredUser.getLogin());
         $("[data-test-id=password] input").setValue(unregisteredUser.getPassword());
         $("[data-test-id=action-login]").click();
 
@@ -53,7 +53,7 @@ public class AuthentificationTest {
         var blockedUser = getRegisteredUser("blocked");
 
         // Вводим логин и пароль
-        $("[data-test-id=login] input").setValue(blockedUser.getUsername());
+        $("[data-test-id=login] input").setValue(blockedUser.getLogin());
         $("[data-test-id=password] input").setValue(blockedUser.getPassword());
         $("[data-test-id=action-login]").click();
 
@@ -63,25 +63,30 @@ public class AuthentificationTest {
     }
 
     @Test
-    void shouldShowErrorWithWrongLoginOrPassword() {
+    void shouldShowErrorWithWrongLogin() {
         // Создаем активного зарегистрированного пользователя
         var registeredUser = getRegisteredUser("active");
-
         // Вводим неправильный логин
         $("[data-test-id=login] input").setValue(DataGenerator.getRandomLogin());
         $("[data-test-id=password] input").setValue(registeredUser.getPassword());
         $("[data-test-id=action-login]").click();
 
-        // Проверяем сообщение об ошибке
         $("[data-test-id=error-notification] .notification__content")
                 .shouldHave(Condition.text("Ошибка! Неверно указан логин или пароль"))
                 .shouldBe(Condition.visible);
+    }
 
-        $("[data-test-id=login] input").setValue(registeredUser.getUsername());
+    @Test
+    void shouldShowErrorWithWrongPassword () {
+        var registeredUser = getRegisteredUser("active");
+
+        $("[data-test-id=login] input").setValue(registeredUser.getLogin());
         $("[data-test-id=password] input").setValue(DataGenerator.getRandomPassword());
         $("[data-test-id=action-login]").click();
         $("[data-test-id=error-notification] .notification__content")
                 .shouldHave(Condition.text("Ошибка! Неверно указан логин или пароль"))
                 .shouldBe(Condition.visible);
     }
+
+
 }
