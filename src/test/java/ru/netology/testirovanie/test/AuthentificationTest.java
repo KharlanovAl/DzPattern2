@@ -28,7 +28,6 @@ public class AuthentificationTest {
         $("[data-test-id=password] input").setValue(registeredUser.getPassword());
         $("[data-test-id=action-login]").click();
 
-        // Проверяем успешную авторизацию
         $("h2").shouldHave(Condition.text("Личный кабинет"))
                 .shouldBe(Condition.visible);
     }
@@ -41,7 +40,6 @@ public class AuthentificationTest {
         $("[data-test-id=password] input").setValue(unregisteredUser.getPassword());
         $("[data-test-id=action-login]").click();
 
-        // Проверяем сообщение об ошибке
         $("[data-test-id=error-notification] .notification__content")
                 .shouldHave(Condition.text("Ошибка! Неверно указан логин или пароль"))
                 .shouldBe(Condition.visible);
@@ -64,7 +62,6 @@ public class AuthentificationTest {
 
     @Test
     void shouldShowErrorWithWrongLogin() {
-        // Создаем активного зарегистрированного пользователя
         var registeredUser = getRegisteredUser("active");
         // Вводим неправильный логин
         $("[data-test-id=login] input").setValue(DataGenerator.getRandomLogin());
